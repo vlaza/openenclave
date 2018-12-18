@@ -35,6 +35,8 @@ add_library(oeenclave STATIC
     random.c
     rsa.c
     sha.c
+    tls.c
+    tlsverifiere.c
     ${PLATFORM_SRC})
 
 if(CMAKE_C_COMPILER_ID MATCHES GNU)

@@ -46,6 +46,7 @@ if (UNIX OR ADD_WINDOWS_ENCLAVE_TESTS)
         add_subdirectory(thread)
         add_subdirectory(threadcxx)
         add_subdirectory(thread_local)
+        add_subdirectory(tls)
         add_subdirectory(VectorException)
     endif()
 
