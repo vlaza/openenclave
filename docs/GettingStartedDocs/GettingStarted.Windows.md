@@ -41,7 +41,7 @@ The state of the service should be "running" (4). Follow Intel's documentation f
 Microsoft Visual Studio 2017
 ---------------------------------
 Install the latest version of [Microsoft Visual Studio 2017](https://www.visualstudio.com/downloads/).
-Visual Studio 2017's cmake support is required for building the Open Enclave SDK.
+Visual Studio 2017's cmake support (ver 3.12 or above) is required for building the Open Enclave SDK.
 For more information about cmake support, refer to
 https://blogs.msdn.microsoft.com/vcblog/2016/10/05/cmake-support-in-visual-studio/
 
@@ -57,6 +57,16 @@ Open a command prompt and ensure that bash is available in the path:
 ```cmd
 C:\>where bash
 C:\Program Files\Git\bin\bash.exe
+```
+
+Special Note: If you have WSL installed on your platform, it will most likely show up as the first item as
+c:\Windows\System32\bash.exe. You can delete WSL in your platform if possible OR rename this to bashWSL.exe.
+Only trusted users can modify the system file bash.exe deployed with WSL. So, first modify ACL for bash.exe
+using ICACLS and then rename bash as follows:
+```cmd
+icacls bash.exe /grant <user-name>:f
+   where <user-name> is your user-name
+rename bash.exe bashWSL.exe
 ```
 
 Clang
