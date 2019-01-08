@@ -124,8 +124,8 @@ https://blogs.msdn.microsoft.com/vcblog/2016/10/05/cmake-support-in-visual-studi
 1. Under the File menu, select Open > CMake...
 2. Open the CMakeLists.txt at the root of your Open Enclave repo
    (e.g. C:\openenclave\CMakeLists.txt)
-3. The CMake menu option should appear when it detects a valid CMake project is
-   loaded. VS2017 will then recursively walk the repo directory structure and
+3. The CMake menu option should appear when it detects that a valid CMake project
+   is loaded. VS2017 will then recursively walk the repo directory structure and
    generate a cache for the project to display Intellisense.
 4. Open Enclave is only supported for 64-bit. By default the `x64-Debug` configuration is 
    selected.
@@ -135,7 +135,7 @@ https://blogs.msdn.microsoft.com/vcblog/2016/10/05/cmake-support-in-visual-studi
 The results of the build will be displayed in the Output window and any build
 errors or warnings collated in the Error List window.
 
-You can change the build settings by with the CMake > Change CMake Settings menu
+You can change the build settings with the CMake > Change CMake Settings menu
 option. This opens the [CMakeSettings.json](https://blogs.msdn.microsoft.com/vcblog/2017/08/14/cmake-support-in-visual-studio-customizing-your-environment/)
 file which you can edit and change settings such as the target build location.
 
