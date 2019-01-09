@@ -41,7 +41,7 @@ The state of the service should be "running" (4). Follow Intel's documentation f
 Microsoft Visual Studio 2017
 ---------------------------------
 Install the latest version of [Microsoft Visual Studio 2017](https://www.visualstudio.com/downloads/).
-Visual Studio 2017's cmake support (ver 3.12 or above) is required for building the Open Enclave SDK.
+Visual Studio 2017's CMake support (ver 3.12 or above) is required for building the Open Enclave SDK.
 For more information about cmake support, refer to
 https://blogs.msdn.microsoft.com/vcblog/2016/10/05/cmake-support-in-visual-studio/
 
@@ -60,7 +60,8 @@ C:\Program Files\Git\bin\bash.exe
 ```
 
 Special Note: If you have WSL installed on your platform, it will most likely show up as the first item as
-c:\Windows\System32\bash.exe. You can delete WSL in your platform if possible OR rename this to bashWSL.exe.
+c:\Windows\System32\bash.exe and the build fails as the auto-generation of alltypes.h fails. This is being
+addressed with Issue #1302 . As a temporary workaround until this bug has been fixed, you can rename bash.exe.
 Only trusted users can modify the system file bash.exe deployed with WSL. So, first modify ACL for bash.exe
 using ICACLS and then rename bash as follows:
 ```cmd
