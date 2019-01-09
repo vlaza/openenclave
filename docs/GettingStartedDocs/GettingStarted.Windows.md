@@ -61,13 +61,7 @@ C:\Program Files\Git\bin\bash.exe
 
 Special Note: If you have WSL installed on your platform, it will most likely show up as the first item as
 c:\Windows\System32\bash.exe and the build fails as the auto-generation of alltypes.h fails. This is being
-addressed with Issue #1302 . As a temporary workaround until this bug has been fixed, you can rename bash.exe.
-Only trusted users can modify the system file bash.exe deployed with WSL. So, first modify ACL for bash.exe
-using ICACLS and then rename bash as follows:
-```cmd
-icacls bash.exe /grant <user-name>:f
-   where <user-name> is your user-name
-rename bash.exe bashWSL.exe
+addressed with Issue #1302 .
 ```
 
 Clang
