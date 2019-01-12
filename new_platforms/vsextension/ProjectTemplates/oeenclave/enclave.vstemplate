@@ -20,8 +20,11 @@
       <ProjectItem ReplaceParameters="true" TargetFileName="$projectname$_private.pem">MyEnclave_private.pem</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="optee/linux_gcc.mak">linux_gcc.mak</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="optee/sub.mk">sub.mk</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="optee/user_ta_header_defines.h">user_ta_header_defines.h</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="optee/uuids.reg">uuids.reg</ProjectItem>
     </Project>
   </TemplateContent>
+  <WizardExtension>  
+    <Assembly>OpenEnclaveSDK, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=6089df5bbfa28701</Assembly>  
+    <FullClassName>OpenEnclaveSDK.WizardImplementation</FullClassName>  
+  </WizardExtension>  
 </VSTemplate>
