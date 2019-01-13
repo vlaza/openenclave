@@ -132,7 +132,7 @@ exit:
 }
 
 // verify report data against peer certificate
-oe_result_t verify_report_data(mbedtls_x509_crt* crt, uint8_t*  report_data)
+oe_result_t verify_report_user_data(mbedtls_x509_crt* crt, uint8_t*  report_data)
 {
     #define PUBLIC_KEY_SIZE     512
     #define SHA256_DIGEST_SIZE  32
@@ -170,7 +170,7 @@ done:
 }
 
 oe_result_t oe_verify_tls_cert( uint8_t* cert_in_der, size_t cert_in_der_len, 
-                                tls_cert_verify_callback_t verify_enclave_identity_info_callback)
+                                oe_enclave_identity_verify_callback_t enclave_identity_callback)
 {
     oe_result_t result = OE_FAILURE;
     uint8_t* report = NULL;
@@ -198,19 +198,27 @@ oe_result_t oe_verify_tls_cert( uint8_t* cert_in_der, size_t cert_in_der_len,
     OE_CHECK(result);
     OE_TRACE_INFO("oe_verify_report() succeeded");
 
-    // verify report data against peer certificate
-    result = verify_report_data(&crt, parsed_report.report_data);
+    // verify report size and type
+    if (parsed_report.size != sizeof(oe_report_t))
+        OE_RAISE_MSG(OE_VERIFY_FAILED, "Unexpected parsed_report.size: %d (expected value:%d) ", parsed_report.size, sizeof(oe_report_t));
+
+    if (parsed_report.type != OE_ENCLAVE_TYPE_SGX)
+        OE_RAISE_MSG(OE_VERIFY_FAILED, "Report type is not supported: parsed_report.type (%d)", parsed_report.type);
+
+    // verify report's user data
+    result = verify_report_user_data(&crt, parsed_report.report_data);
     OE_CHECK(result);
 
-    if (verify_enclave_identity_info_callback)
+    // callback to the caller to verity enclave identity
+    if (enclave_identity_callback)
     {
-        result = verify_enclave_identity_info_callback(&parsed_report);
+        result = enclave_identity_callback(&parsed_report.identity);
         OE_CHECK(result);
-        OE_TRACE_INFO("verify_enclave_identity_info_callback() succeeded");
+        OE_TRACE_INFO("enclave_identity_callback() succeeded");
     }
     else
     {
-        OE_TRACE_WARNING("No verify_enclave_identity_info_callback provided in oe_verify_tls_cert call", NULL);
+        OE_TRACE_WARNING("No enclave_identity_callback provided in oe_verify_tls_cert call", NULL);
     }
 done:
     mbedtls_x509_crt_free(&crt);

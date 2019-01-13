@@ -78,28 +78,8 @@ static oe_result_t extract_x509_report_extension
 {   
     oe_result_t result = OE_FAILURE;
 
-    // get_and_decode_ext(crt,
-    //                    oid_oe_report,
-    //                    sizeof(oid_oe_report),
-    //                    attn_report->ias_report, 
-    //                    sizeof(attn_report->ias_report),
-    //                    &attn_report->ias_report_len);
-
     result = get_extension(crt, oid_oe_report, sizeof(oid_oe_report), ext_data, ext_data_size);
     OE_CHECK(result);
-
-    // not sure what the following check is:
-    //assert(ext_len * 3 <= data_max_len * 4);
-    //int ret = EVP_DecodeBlock_wrapper(data, ext, ext_len);
-    
-    //assert(ret != -1);
-    //*data_len = ret;
-
-    // Assert we got all of our extensions.
-    // assert(attn_report->ias_report_signature_len != 0 &&
-    //        attn_report->ias_sign_cert_len != 0 &&
-    //        attn_report->ias_sign_ca_cert_len != 0 &&
-    //        attn_report->ias_report_len != 0);
 
     if (*ext_data_size != 0)
         result = OE_OK;
@@ -112,7 +92,7 @@ done:
 #define SHA256_DIGEST_SIZE  32
 // TODO: move this to shared library
 // verify report data against peer certificate
-oe_result_t verify_report_data(uint8_t *key_buff, uint8_t*  report_data);
+oe_result_t verify_report_user_data(uint8_t *key_buff, uint8_t*  report_data);
 oe_result_t get_public_key_from_cert(X509* cert, uint8_t *key_buff, size_t *key_size);
 oe_result_t verify_cert(X509 *cert);
 
@@ -139,7 +119,7 @@ done:
     return result;
 }
 
-oe_result_t verify_report_data(uint8_t *key_buff, uint8_t*  report_data)
+oe_result_t verify_report_user_data(uint8_t *key_buff, uint8_t*  report_data)
 {
     oe_result_t result = OE_FAILURE;
     OE_SHA256 sha256;
@@ -215,7 +195,7 @@ done:
     return result;
 }
 oe_result_t oe_verify_tls_cert( uint8_t* cert_in_der, size_t cert_in_der_len, 
-                                tls_cert_verify_callback_t verify_enclave_identity_info_callback)
+                                oe_enclave_identity_verify_callback_t enclave_identity_callback)
 {
     oe_result_t result = OE_FAILURE;
     const unsigned char* p = cert_in_der;
@@ -226,9 +206,9 @@ oe_result_t oe_verify_tls_cert( uint8_t* cert_in_der, size_t cert_in_der_len,
     size_t pub_key_buf_size = 0;
     oe_report_t parsed_report = {0};
 
-//  OpenSSL_add_all_algorithms();
-//   ERR_load_BIO_strings();
-//   ERR_load_crypto_strings();
+    //  OpenSSL_add_all_algorithms();
+    //   ERR_load_BIO_strings();
+    //   ERR_load_crypto_strings();
 
     // create a OpenSSL cert object from encoded cert data in DER format
     cert = d2i_X509(NULL, &p, (uint32_t)cert_in_der_len);
@@ -263,43 +243,23 @@ oe_result_t oe_verify_tls_cert( uint8_t* cert_in_der, size_t cert_in_der_len,
     OE_CHECK(result);
 
     // verify report data against peer certificate
-    result = verify_report_data(pub_key_buf, parsed_report.report_data);
+    result = verify_report_user_data(pub_key_buf, parsed_report.report_data);
     OE_CHECK(result);
-    OE_TRACE_INFO("verify_report_data passed", NULL);
+    OE_TRACE_INFO("verify_report_user_data passed", NULL);
 
     //---------------------------------------
     // call client to check enclave identity
     // --------------------------------------
-    if (verify_enclave_identity_info_callback)
+    if (enclave_identity_callback)
     {
-        result = verify_enclave_identity_info_callback(&parsed_report);
+        result = enclave_identity_callback(&parsed_report.identity);
         OE_CHECK(result);
-        OE_TRACE_INFO("verify_enclave_identity_info_callback() succeeded");
+        OE_TRACE_INFO("enclave_identity_callback() succeeded");
     }
     else
     {
-        OE_TRACE_WARNING("No verify_enclave_identity_info_callback provided in oe_verify_tls_cert call", NULL);
+        OE_TRACE_WARNING("No enclave_identity_callback provided in oe_verify_tls_cert call", NULL);
     }
-
-    // verify_report_data_against_server_cert
-
-    // ret = verify_ias_certificate_chain(&attn_report);
-    // assert(ret == 0);
-
-    // ret = verify_ias_report_signature(&attn_report);
-    // assert(ret == 0);
-
-    // ret = verify_enclave_quote_status((const char*) attn_report.ias_report,
-    //                                   attn_report.ias_report_len);
-    // assert(ret == 0);
-    
-    // sgx_quote_t quote = {0, };
-    // get_quote_from_report(attn_report.ias_report,
-    //                       attn_report.ias_report_len,
-    //                       &quote);
-    // ret = verify_report_data_against_server_cert(cert, &quote);
-    // assert(ret == 0);
-
 
 done:
     if (cert)
