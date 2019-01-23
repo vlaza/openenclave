@@ -1,7 +1,10 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-[defaults]
+[linux-agents]
+host2
+host3
 
-[linux-slaves]
-IPADDRESS
+[windows-agents]
+host4
+host5
