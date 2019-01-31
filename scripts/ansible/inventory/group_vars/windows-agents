@@ -7,3 +7,38 @@ ansible_connection: winrm
 # The following is necessary for Python 2.7.9+ (or any older Python that has backported SSLContext
 # eg, Python 2.7.5 on RHEL7) when using default WinRM self-signed certificates:
 ansible_winrm_server_cert_validation: ignore
+tmp_dir: "C:\\Windows\\Temp"
+servicewrapper_url: "https://github.com/cloudbase/OpenStackService/releases/download/v0.1/service-wrapper-sdk10-x64.zip"
+packages:
+  7z:
+    url: "https://www.7-zip.org/a/7z1806-x64.msi"
+    dest: "{{ tmp_dir }}\\7z1806-x64.msi"
+  vs_2017:
+    url: "https://aka.ms/vs/15/release/vs_buildtools.exe"
+    dest: "{{ tmp_dir }}\\vs_buildtools-2017.exe"
+  ocaml:
+    url: "https://www.ocamlpro.com/pub/ocpwin/ocpwin-builds/ocpwin64/20160113/ocpwin64-20160113-4.02.1+ocp1-mingw64.zip"
+    dest: "{{ tmp_dir }}\\ocpwin64-4.02.1-ocp1-mingw64.zip"
+  clang7:
+    url: "http://releases.llvm.org/7.0.1/LLVM-7.0.1-win64.exe"
+    dest: "{{ tmp_dir }}\\LLVM-7.0.1-win64.exe"
+  cmake:
+    url: "https://github.com/Kitware/CMake/releases/download/v3.13.3/cmake-3.13.3-win64-x64.msi"
+    dest: "{{ tmp_dir }}\\cmake-3.13.3-win64-x64.msi"
+  git:
+    url: "https://github.com/git-for-windows/git/releases/download/v2.20.1.windows.1/Git-2.20.1-64-bit.exe"
+    dest: "{{ tmp_dir }}\\Git-2.20.1-64-bit.exe"
+  ninja:
+    url: "https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-win.zip"
+    dest: "{{ tmp_dir }}\\ninja-win.zip"
+  shellcheck
+    url: "https://storage.googleapis.com/shellcheck/shellcheck-stable.zip"
+    dest: "{{ tmp_dir }}\\shellcheck-stable.zip"
+packages_env_path:
+  - 'C:\Program Files\7-Zip'
+  - 'C:\Program Files\4.02.1+ocp1-mingw64-20160113\bin'
+  - 'C:\Program Files\LLVM\bin'
+  - 'C:\Program Files\CMake\bin'
+  - 'C:\Program Files\Git\bin'
+  - 'C:\Program Files\Ninja'
+  - 'C:\Program Files\shellcheck'
