@@ -7,6 +7,11 @@
   become: yes
   tasks:
     - import_role:
+        name: common/jenkins-agent
+        tasks_from: agent-provision.yml
+      delegate_to: localhost
+
+    - import_role:
         name: linux/openenclave
         tasks_from: environment-setup.yml
 
@@ -29,6 +34,11 @@
 - hosts: windows-agents
   any_errors_fatal: true
   tasks:
+    - import_role:
+        name: common/jenkins-agent
+        tasks_from: agent-provision.yml
+      delegate_to: localhost
+
     - import_role:
         name: windows/jenkins
         tasks_from: slave-setup.yml

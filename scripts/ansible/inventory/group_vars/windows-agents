@@ -8,6 +8,7 @@ ansible_connection: winrm
 # eg, Python 2.7.5 on RHEL7) when using default WinRM self-signed certificates:
 ansible_winrm_server_cert_validation: ignore
 tmp_dir: "C:\\Windows\\Temp"
+jenkins_agent_root_dir: "C:/Jenkins"
 servicewrapper_url: "https://github.com/cloudbase/OpenStackService/releases/download/v0.1/service-wrapper-sdk10-x64.zip"
 packages:
   7z:
@@ -31,7 +32,7 @@ packages:
   ninja:
     url: "https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-win.zip"
     dest: "{{ tmp_dir }}\\ninja-win.zip"
-  shellcheck
+  shellcheck:
     url: "https://storage.googleapis.com/shellcheck/shellcheck-stable.zip"
     dest: "{{ tmp_dir }}\\shellcheck-stable.zip"
 packages_env_path:
@@ -40,5 +41,6 @@ packages_env_path:
   - 'C:\Program Files\LLVM\bin'
   - 'C:\Program Files\CMake\bin'
   - 'C:\Program Files\Git\bin'
+  - 'C:\Program Files\Java\jdk1.8.0_201\bin'
   - 'C:\Program Files\Ninja'
   - 'C:\Program Files\shellcheck'
