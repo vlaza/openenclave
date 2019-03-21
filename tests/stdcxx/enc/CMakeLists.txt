@@ -1,6 +1,9 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+set_source_files_properties(enc.cpp PROPERTIES
+    COMPILE_FLAGS -Wno-error=catch-value)
+
 oeedl_file(../stdcxx.edl enclave gen)
 
 add_enclave(TARGET stdcxx_enc CXX SOURCES enc.cpp f.cpp ${gen})
