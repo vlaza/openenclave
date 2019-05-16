@@ -7,6 +7,25 @@
   gather_facts: true
   become: yes
   tasks:
+    - name: Setup GCC 8 on 18.04
+      block:
+        - apt:
+            name:
+              - "gcc-8"
+              - "g++-8"
+            state: present
+            update_cache: yes
+            install_recommends: no
+        - file:
+            src: "/usr/bin/{{ item }}-8"
+            dest: "/usr/bin/{{ item }}"
+            force: yes
+            state: link
+          with_items:
+            - "gcc"
+            - "g++"
+      when: ansible_distribution_release == 'bionic'
+
     - import_role:
         name: linux/jenkins
         tasks_from: slave-setup.yml
