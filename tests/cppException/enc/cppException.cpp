@@ -247,7 +247,7 @@ bool BasicVerification()
     {
         return false;
     }
-    catch (BarClass02 ex_obj)
+    catch (BarClass02& ex_obj)
     {
         if (ex_obj.i != 0XFFFFF)
         {
@@ -322,7 +322,7 @@ bool BasicVerification()
     {
         return false;
     }
-    catch (BarClass02 ex_obj)
+    catch (BarClass02& ex_obj)
     {
         if (ex_obj.i != 0XFFFFFF)
         {
@@ -409,7 +409,7 @@ void bar02()
         BarClass02 obj(0XFFFFF);
         throw obj;
     }
-    catch (BarClass03)
+    catch (BarClass03&)
     {
         return;
     }
@@ -492,7 +492,7 @@ bool NestedException()
             return false;
         }
     }
-    catch (BarClass02 ex_obj)
+    catch (BarClass02& ex_obj)
     {
         if (ex_obj.i != 0XFFFF)
         {
